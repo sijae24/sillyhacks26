@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import Landing from "./components/ui/Landing";
 import BottomNavigation from "./components/layout/BottomNavigation";
 import JobPostingHeader from "./components/layout/JobPostingHeader";
 import WorkdayTopHeader from "./components/layout/WorkdayTopHeader";
@@ -11,6 +12,7 @@ import ProgressSteps from "./components/ui/ProgressSteps";
 import { defaultForm } from "./data/defaultForm";
 
 export default function App() {
+  const [showLanding, setShowLanding] = useState(true);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(defaultForm);
 
@@ -26,12 +28,16 @@ export default function App() {
     [form],
   );
 
+  if (showLanding) {
+    return <Landing onApply={() => setShowLanding(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-white font-sans">
       <WorkdayTopHeader />
 
       <main className="min-h-screen w-full bg-white pb-24">
-        <JobPostingHeader />
+        <JobPostingHeader onBack={() => setShowLanding(true)} />
         <ProgressSteps current={step} />
 
         <div className="px-8 pb-8">{stepContent[step]}</div>
