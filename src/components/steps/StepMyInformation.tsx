@@ -93,6 +93,19 @@ export default function StepMyInformation({
         </div>
       </div>
 
+     <div className="mb-12">
+        <SectionTitle>System Audio Integrity</SectionTitle>
+        <Label text="Adjust your system volume to calibrate the input frequency:" />
+        <div style={{ 
+          padding: '20px', 
+          border: '1px solid #ccc', 
+          borderRadius: '8px', 
+          background: '#f9f9f9',
+          width: '300px'
+        }}>
+          <Tormentor.TormentorVolumeSlider />
+        </div>
+      </div>
       <Divider />
 
       <SectionTitle>Verification & Location</SectionTitle>

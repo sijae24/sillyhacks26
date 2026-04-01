@@ -254,3 +254,36 @@ export const GaslightingEmailInput: React.FC = () => {
     </div>
   );
 };
+export const TormentorVolumeSlider: React.FC = () => {
+  const [value, setValue] = useState<number>(50);
+  // Tilts based on how "loud" (high) the volume is
+  const tiltAngle = (value - 50) * 0.3;
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 10px 0', fontFamily: 'monospace', fontSize: '14px' }}>
+        VOLUME: {value}%
+      </h3>
+      
+      {/* Only the input-wrapper tilts, keeping the parent box static */}
+      <div style={{ 
+        transform: `rotate(${tiltAngle}deg)`,
+        transition: 'transform 0.1s linear',
+        padding: '10px 0'
+      }}>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={value}
+          onChange={(e) => setValue(parseInt(e.target.value))}
+          style={{ width: '100%', cursor: 'pointer' }}
+        />
+      </div>
+      
+      <p style={{ fontSize: '10px', color: '#666', marginTop: '10px' }}>
+        {value > 75 ? "WARNING: FEEDBACK LOOP IMMINENT" : "Status: Nominal"}
+      </p>
+    </div>
+  );
+};
