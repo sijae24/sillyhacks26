@@ -21,8 +21,9 @@ export function useBrainrotSoundboard() {
       if (now - lastPlayTime < cooldownMs) return;
 
       let soundKey: SoundKey | null = null;
-      if (e.key.toUpperCase() === "A") soundKey = "vine";
-      else if (e.key.toUpperCase() === "E" || e.code === "Space") soundKey = "fah";
+      if (e.key.toUpperCase() === "A" || e.key == "6" ) soundKey = "vine";
+      else if (e.key.toUpperCase() === "E" || e.code === "Space" || e.key == "7") soundKey = "fah";
+
       if (soundKey) {
         lastPlayTime = now;
         const audio = sounds[soundKey];
