@@ -44,17 +44,26 @@ interface CursedSliderProps {
   onChange: (value: number) => void;
 }
 
-export const CursedSlider: React.FC<CursedSliderProps> = ({ value, onChange }) => {
+export const CursedSlider = ({ value, onChange }: { value: number; onChange: (val: number) => void }) => {
   return (
-    <input 
-      type="range" 
-      min="0" 
-      max="999999999" 
-      step="100000" 
-      value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(Number(e.target.value))}
-      style={{ width: '100%', cursor: 'grab' }}
-    />
+    <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
+      <div className="text-3xl font-mono text-center tracking-widest text-blue-900 font-bold">
+        {value.toString().padStart(9, '0')}
+      </div>
+      <input 
+        type="range" 
+        min="100000000" 
+        max="999999999" 
+        step="1" 
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full h-2 bg-blue-300 rounded-lg appearance-none cursor-pointer"
+      />
+      <div className="flex justify-between text-xs text-gray-500">
+        <span>100,000,000</span>
+        <span>999,999,999</span>
+      </div>
+    </div>
   );
 };
 
@@ -86,6 +95,22 @@ export const ChaoticDropdown: React.FC = () => {
         </option>
       ))}
     </select>
+  );
+};
+export const ChaosNumberDisplay = ({ value, onChange }: { value: number; onChange: (val: number) => void }) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium">mobile Number:</label>
+      <input
+        type="number" 
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="border-2 border-red-500 p-2 rounded text-lg font-mono"
+      />
+      <small className="text-gray-500 italic">
+        {value === 500000000 ? "✓ Validation Passed" : "⚠ System Instability Detected"}
+      </small>
+    </div>
   );
 };
 
