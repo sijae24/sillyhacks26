@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as Tormentor from "../../components/ui/tormentor";
 
 export default function WorkdayTopHeader({ 
   volume, 
@@ -17,15 +18,12 @@ export default function WorkdayTopHeader({
     <header className="bg-white border-b border-gray-300 shadow-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         
-        {/* SillyHacks Careers Branding (Consistent with Landing Page) */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-blue-600 font-bold text-white flex items-center justify-center rounded-sm">SH</div>
           <span className="font-bold text-xl tracking-tight text-blue-900">SillyHacks Careers</span>
         </div>
         
         <nav className="flex items-center gap-6 text-sm font-semibold text-gray-600">
-          
-          {/* Settings Dropdown Container */}
           <div className="relative">
             <button 
               onClick={() => setIsOpen(!isOpen)} 
@@ -37,8 +35,7 @@ export default function WorkdayTopHeader({
             {isOpen && (
               <div className="absolute right-0 mt-0 w-64 rounded-sm border border-gray-300 bg-white p-4 shadow-xl z-50 font-normal">
                 
-                {/* Theme Selector */}
-                <div className="mb-4">
+                <div className="mb-6">
                   <label className="block text-xs font-bold text-gray-700 mb-1">Theme</label>
                   <select 
                     value={theme}
@@ -50,32 +47,14 @@ export default function WorkdayTopHeader({
                   </select>
                 </div>
                 
-                {/* Bad UX Volume Selector */}
-                <div>
-                  <label className="mb-1 block text-xs font-bold text-gray-700">
-                    Audio Volume (Select One)
+                {/* Replaced old selector with the Tilting Volume Tormentor */}
+                <div className="border-t pt-4">
+                  <label className="mb-2 block text-xs font-bold text-gray-700">
+                    System Audio Integrity
                   </label>
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="text-lg">🔊</span>
-                    {[0, 0.25, 0.5, 0.75, 1.0].map((val) => (
-                      <select
-                        key={val}
-                        value={volume === val ? val : "empty"}
-                        onChange={(e) => {
-                          if (e.target.value !== "empty") {
-                            setVolume(Number(e.target.value));
-                          } else {
-                            setVolume(0);
-                          }
-                        }}
-                        className="cursor-pointer border border-gray-400 bg-gray-50 px-1 text-base w-10 h-8 flex-shrink-0 text-center text-black"
-                        title="Guess the volume!"
-                      >
-                        {/* ASCII character blocks instead of emojis */}
-                        <option value="empty">-</option>
-                        <option value={val}>■</option>
-                      </select>
-                    ))}
+                  <div className="p-2 border border-dashed border-gray-200 rounded">
+                    {/* We pass the external volume state into the Tormentor */}
+                    <Tormentor.TormentorVolumeSlider />
                   </div>
                 </div>
 
