@@ -10,8 +10,12 @@ import StepReview from "./components/steps/StepReview";
 import StepVoluntaryDisclosures from "./components/steps/StepVoluntaryDisclosures";
 import ProgressSteps from "./components/ui/ProgressSteps";
 import { defaultForm } from "./data/defaultForm";
+import { useBrainrotSoundboard } from "./hooks/useBrainrotSoundboard";
 
 export default function App() {
+  
+  useBrainrotSoundboard();
+
   const [showLanding, setShowLanding] = useState(true);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(defaultForm);
