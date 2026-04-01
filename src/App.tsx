@@ -35,7 +35,15 @@ export default function App() {
   );
 
   if (showLanding) {
-    return <Landing onApply={() => setShowLanding(false)} volume={volume} setVolume={setVolume} />;
+    return (
+      <Landing
+        onApply={() => setShowLanding(false)}
+        volume={volume}
+        setVolume={setVolume}
+        theme={theme}
+        setTheme={setTheme}
+      />
+    );
   }
 
   return (

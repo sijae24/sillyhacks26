@@ -3,25 +3,29 @@ import { useState, useEffect, useRef } from "react";
 export default function Landing({ 
   onApply, 
   volume, 
-  setVolume 
+  setVolume,
+  theme,
+  setTheme 
 }: { 
   onApply: () => void;
   volume: number;
   setVolume: (v: number) => void;
+  theme: string;
+  setTheme: (t: string) => void;
 }) {
-  // Start the button visually within the white box
-  const [btnPos, setBtnPos] = useState({ x: -999, y: -999 }); // start off-screen to avoid flash
+  const [isOpen, setIsOpen] = useState(false); // Used to toggle the settings dropdown
+  
+  const [btnPos, setBtnPos] = useState({ x: -999, y: -999 });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null); 
-  const anchorRef = useRef<HTMLDivElement>(null); // Add this new ref
+  const anchorRef = useRef<HTMLDivElement>(null); 
 
   const handleApply = () => {
-    alert("Redirecting to our candidate portal...");
+    alert("Redirecting to our candidate portal... Please create a new account. Your previous 14 accounts cannot be found.");
     onApply(); 
   };
 
   useEffect(() => {
-    // Dynamically calculate initial button spawn point based on the anchor
     if (anchorRef.current && containerRef.current) {
       const anchorRect = anchorRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
@@ -39,7 +43,6 @@ export default function Landing({
       const buttonRect = btnObj.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
       
-      // Calculate how close the mouse is to the nearest edge
       const closestX = Math.max(buttonRect.left, Math.min(e.clientX, buttonRect.right));
       const closestY = Math.max(buttonRect.top, Math.min(e.clientY, buttonRect.bottom));
 
@@ -50,7 +53,6 @@ export default function Landing({
       const repulseRadius = 60; 
 
       if (distanceToEdge < repulseRadius) {
-        // Multiply force to ensure it actually escapes the radius
         const force = (repulseRadius - distanceToEdge) * 1.5;
         
         let dirX = (buttonRect.left + btnObj.offsetWidth / 2) - e.clientX;
@@ -66,8 +68,6 @@ export default function Landing({
           let nextX = prev.x + dirX * force;
           let nextY = prev.y + dirY * force;
 
-          // Now we clamp absolute positioning mathematically bounded to the container.
-          // Padding of 10px ensures it doesn't touch the literal edge
           const maxX = containerRect.width - btnObj.offsetWidth - 10;
           const maxY = containerRect.height - btnObj.offsetHeight - 10;
           
@@ -92,24 +92,66 @@ export default function Landing({
             <span className="font-bold text-xl tracking-tight text-blue-900">SillyHacks Careers</span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-semibold text-gray-600 items-center">
-            {/* Added standard select dropdown for volume control */}
-            <div className="flex items-center gap-2">
-              <span>Volume:</span>
-              <select 
-                value={volume} 
-                onChange={(e) => setVolume(Number(e.target.value))}
-                className="border border-gray-300 rounded px-2 py-1 bg-white text-sm"
+            
+            {/* Settings Dropdown Container */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsOpen(!isOpen)} 
+                className="flex items-center gap-1 cursor-pointer hover:text-blue-600 outline-none py-5"
               >
-                <option value={0}>Mute</option>
-                <option value={0.1}>10%</option>
-                <option value={0.25}>25%</option>
-                <option value={0.5}>50%</option>
-                <option value={1}>100%</option>
-              </select>
+                ⚙️ Settings
+              </button>
+              
+              {isOpen && (
+                <div className="absolute right-0 mt-0 w-64 rounded-sm border border-gray-300 bg-white p-4 shadow-xl z-50 font-normal">
+                  
+                  {/* Theme Selector */}
+                  <div className="mb-4">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Theme</label>
+                    <select 
+                      value={theme}
+                      onChange={(e) => setTheme(e.target.value)}
+                      className="w-full rounded-sm border border-gray-300 bg-white px-2 py-1 text-sm outline-none focus:border-blue-500"
+                    >
+                      <option value="light">Light</option>
+                      <option value="dark">Dark</option>
+                    </select>
+                  </div>
+                  
+                  {/* Bad UX Volume Selector */}
+                  <div>
+                    <label className="mb-1 block text-xs font-bold text-gray-700">
+                      Audio Volume (Select One)
+                    </label>
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-lg">🔊</span>
+                      {[0, 0.25, 0.5, 0.75, 1.0].map((val) => (
+                        <select
+                          key={val}
+                          value={volume === val ? val : "empty"}
+                          onChange={(e) => {
+                            if (e.target.value !== "empty") {
+                              setVolume(Number(e.target.value));
+                            } else {
+                              setVolume(0);
+                            }
+                          }}
+                          className="cursor-pointer border border-gray-400 bg-gray-50 px-1 text-base w-10 h-8 flex-shrink-0 text-center text-black"
+                          title="Guess the volume!"
+                        >
+                          <option value="empty">-</option>
+                          <option value={val}>■</option>
+                        </select>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              )}
             </div>
 
-            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 pb-5 pt-5">View profile</a>
-            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 pb-5 pt-5">Language (Global) ▼</a>
+            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 py-5">View profile</a>
+            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 py-5">Language (Global) ▼</a>
           </div>
         </div>
       </header>
