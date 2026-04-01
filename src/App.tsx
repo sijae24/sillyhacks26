@@ -9,21 +9,30 @@ import StepReview from "./components/steps/StepReview";
 import StepVoluntaryDisclosures from "./components/steps/StepVoluntaryDisclosures";
 import ProgressSteps from "./components/ui/ProgressSteps";
 import { defaultForm } from "./data/defaultForm";
+import * as Tormentor from "./components/ui/tormentor";
 
 export default function App() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(defaultForm);
+  // State for the cursed slider
+  const [chaosValue, setChaosValue] = useState(0);
 
   const stepContent = useMemo(
     () => [
       null,
       <StepMyInformation form={form} setForm={setForm} />,
       <StepMyExperience form={form} setForm={setForm} />,
-      <StepAppQuestions form={form} setForm={setForm} />,
+      // Step 3: Now replaced with your Cursed Components
+      <div className="space-y-8">
+        <h2 className="text-xl font-bold">Verification</h2>
+        <Tormentor.ChaoticInput />
+        <Tormentor.ChaoticDropdown />
+        <Tormentor.CursedSlider value={chaosValue} onChange={setChaosValue} />
+      </div>,
       <StepVoluntaryDisclosures form={form} setForm={setForm} />,
       <StepReview form={form} />,
     ],
-    [form],
+    [form, chaosValue],
   );
 
   return (
