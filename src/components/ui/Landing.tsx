@@ -1,199 +1,131 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 export default function Landing({ onApply }: { onApply: () => void }) {
-  const [btnPos, setBtnPos] = useState({ x: 0, y: 0 });
-  const [progress, setProgress] = useState(20);
-  const [maybeText, setMaybeText] = useState("Maybe Later (you won’t)");
-  const [maybeCount, setMaybeCount] = useState(1);
-  const [maybeOffset, setMaybeOffset] = useState({ x: 0, y: 0 });
-  const [maybeDrift, setMaybeDrift] = useState({ x: 0, y: 0 });
-  const [glitchText, setGlitchText] = useState("Software Engineering");
+  const [hasApplied, setHasApplied] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((value) => {
-        const change = Math.random() * 30 - 10;
-        let next = value + change;
-        if (next < 0) next = 5;
-        if (next > 100) next = 80;
-        return next;
-      });
-    }, 1200);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const texts = [
-      "Software Engineering",
-      "Software Guessing",
-      "Bug Creator",
-      "Stack Overflow Specialist",
-    ];
-
-    const interval = setInterval(() => {
-      setGlitchText(texts[Math.floor(Math.random() * texts.length)]);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMaybeDrift({
-        x: Math.random() * 220 - 110,
-        y: Math.random() * 120 - 60,
-      });
-    }, 900);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const initialCards = useMemo(
-    () => [
-      { id: 0, x: 0, y: 0, vx: 0.8, vy: 0.6 },
-      { id: 1, x: 20, y: 10, vx: -0.6, vy: 0.9 },
-      { id: 2, x: -10, y: 20, vx: 0.7, vy: -0.5 },
-      { id: 3, x: 10, y: -10, vx: -0.5, vy: 0.7 },
-    ],
-    [],
-  );
-
-  const [cards, setCards] = useState(initialCards);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCards((previousCards) =>
-        previousCards.map((card) => {
-          let nextX = card.x + card.vx * 10;
-          let nextY = card.y + card.vy * 10;
-          let nextVx = card.vx;
-          let nextVy = card.vy + 0.08;
-
-          if (nextX > 200 || nextX < -200) nextVx = -nextVx;
-          if (nextY > 120 || nextY < -120) nextVy = -nextVy;
-
-          nextX += Math.random() * 10 - 5;
-          nextY += Math.random() * 10 - 5;
-
-          return { ...card, x: nextX, y: nextY, vx: nextVx, vy: nextVy };
-        }),
-      );
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleMaybeLater = () => {
-    const phrases = [
-      "ok fine…",
-      "wait come back",
-      "you sure?",
-      "this is your last chance",
-      "bro just apply 😭",
-    ];
-
-    setMaybeText(phrases[Math.floor(Math.random() * phrases.length)]);
-    setMaybeOffset({
-      x: Math.random() * 60 - 30,
-      y: Math.random() * 30 - 15,
-    });
-
-    if (maybeCount < 5) {
-      setMaybeCount(maybeCount + 1);
-    } else {
-      alert("we are too lazy… just close the website 😭");
-    }
+  const handleApply = () => {
+    alert("Redirecting to our candidate portal... Please create a new account. Your previous 14 accounts cannot be found.");
+    setHasApplied(true);
+    
+    onApply(); 
   };
-
-  const moveButton = () => {
-    setBtnPos({
-      x: Math.random() * 500 - 250,
-      y: Math.random() * 250 - 125,
-    });
-  };
-
-  const content = [
-    ["What you’ll do", "Build features, fix bugs, and question your life choices."],
-    ["What we value", "Clean code, clear thinking, and vibes."],
-    ["Unofficial title", "Stack Overflow Speedrunner."],
-    ["Fun fact", "This card rearranges itself when you get comfortable."],
-  ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
-      <div className="fixed left-0 top-0 h-1 bg-slate-900" style={{ width: `${progress}%` }} />
+    <div className="min-h-screen bg-[#f5f5f5] text-gray-800 font-sans">
+      {/* Corporate Header */}
+      <header className="bg-white border-b border-gray-300 shadow-sm sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-blue-600 font-bold text-white flex items-center justify-center rounded-sm">
+              SH
+            </div>
+            <span className="font-bold text-xl tracking-tight text-blue-900">SillyHacks Careers</span>
+          </div>
+          <div className="hidden md:flex gap-6 text-sm font-semibold text-gray-600">
+            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 pb-5 pt-5">View profile</a>
+            <a href="#" className="hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 pb-5 pt-5">Language (Global) ▼</a>
+          </div>
+        </div>
+      </header>
 
-      <div className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-6 py-12 md:px-10">
-        <div>
-          <p className="mb-4 text-sm uppercase tracking-[0.35em] text-slate-400">Job ID 6767</p>
-
-          <h1 className="max-w-4xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Senior Associate Junior Principal Staff Software Engineer of Distributed Systems, Button
-            Optimization, and Vibe Alignment
-          </h1>
-
-          <div className="relative mt-10 h-28">
-            {Array.from({ length: maybeCount }).map((_, index) => (
-              <button
-                key={index}
-                onClick={handleMaybeLater}
-                style={{
-                  position: "absolute",
-                  left: index * 6,
-                  top: 10,
-                  zIndex: 1,
-                  transform: `translate(${maybeOffset.x + maybeDrift.x}px, ${maybeOffset.y + maybeDrift.y}px)`,
-                }}
-                className="rounded-xl border border-slate-300 bg-white px-7 py-4 text-base font-semibold text-slate-700"
-              >
-                {maybeText}
-              </button>
-            ))}
-
-            <button
-              onMouseEnter={moveButton}
-              onClick={onApply}
-              style={{
-                position: "absolute",
-                left: 200,
-                top: 10,
-                zIndex: 3,
-                transform: `translate(${btnPos.x}px, ${btnPos.y}px)`,
-              }}
-              className="rounded-xl bg-slate-900 px-7 py-4 text-base font-semibold text-white shadow"
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-900 to-gray-800 py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white/95 p-8 max-w-2xl rounded-sm shadow-lg border-t-4 border-blue-500">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
+              Senior Associate Junior Principal Staff Software AI Engineer Intern
+            </h1>
+            <p className="text-xl text-blue-700 font-medium mb-6">Information Technology</p>
+            <button 
+              onClick={handleApply}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-sm shadow transition-colors"
             >
-              Apply Now (good luck)
+              {hasApplied ? "Apply now » (Again)" : "Apply now »"}
             </button>
           </div>
         </div>
+      </div>
 
-        <div className="mt-20">
-          <div className="relative h-100 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-            <div className="mb-4">
-              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Role snapshot</p>
-              <p className="text-2xl font-bold">{glitchText}</p>
-            </div>
+      {/* Main Content Layout */}
+      <div className="max-w-6xl mx-auto px-4 py-12 flex flex-col md:flex-row gap-10">
+        
+        {/* Left Column: Job Description */}
+        <div className="md:w-2/3 bg-white p-8 border border-gray-200 shadow-sm rounded-sm">
+          <div className="prose max-w-none text-gray-700 space-y-6">
+            <h2 className="text-xl tracking-tight text-gray-900 font-bold border-b pb-2">We help the rizz run better</h2>
+            <p>
+              At our company, we keep it simple: you bring your best to us, and we'll immediately ask you to re-type everything on your resume into 47 separate tiny text boxes. We're builders touching over 20 industries and 80% of global brainrot, and we need your unique talents to help shape what's next. The work is challenging – mostly because of our legacy tech stack. You'll find a place where you can prioritize your mewing streak, and truly belong.
+            </p>
 
-            <div className="relative h-full">
-              {cards.map((card) => (
-                <div
-                  key={card.id}
-                  className="absolute w-[40%] rounded-lg border border-slate-200 bg-slate-50 p-4 shadow"
-                  style={{
-                    transform: `translate(${card.x}px, ${card.y}px) rotate(${(card.id % 2 ? 1 : -1) * 4}deg)`,
-                    left: `${20 + card.id * 12}%`,
-                    top: `${20 + card.id * 6}%`,
-                    zIndex: 1 + card.id,
-                  }}
-                >
-                  <p className="text-sm font-semibold text-slate-900">{content[card.id][0]}</p>
-                  <p className="mt-2 text-sm leading-5 text-slate-600">{content[card.id][1]}</p>
-                </div>
-              ))}
+            <h2 className="text-xl tracking-tight text-gray-900 font-bold border-b pb-2 mt-8">What you’ll build</h2>
+            <p>
+              The Internship Experience Program is our global, strategic, underpaid program that provides university students with opportunities to find purpose in their chaotic edge-sessions. 
+            </p>
+            <ul className="list-disc pl-5 space-y-2 mt-4">
+              <li>Engage in practical fanum tax calculations, testing, and design.</li>
+              <li>Embrace lean and agile software development principles by participating in endless daily stand-ups that could have been an email.</li>
+              <li>Collaborate with level 10 gyatts, product managers, and engineers to deliver mid-tier products.</li>
+              <li>Learn from team members through knowledge-sharing sessions about optimal looksmaxxing.</li>
+            </ul>
+
+            <h2 className="text-xl tracking-tight text-gray-900 font-bold border-b pb-2 mt-8">What you bring</h2>
+            <p>We’re looking for someone who takes initiative, perseveres, and stays curious. You like to work on meaningful innovative projects and are energized by absolute nonsense.</p>
+            <ul className="list-disc pl-5 space-y-2 mt-4">
+              <li>Currently registered at an accredited post-secondary institution in Ohio.</li>
+              <li>15+ years of experience with a framework released in 2023.</li>
+              <li>Possesses a positive self-motivated "sigma" attitude.</li>
+              <li>Working knowledge of HTML, CSS, JavaScript, and ancient forbidden runes.</li>
+              <li>Must commit to an 8-month internship starting exactly yesterday.</li>
+            </ul>
+
+            <h2 className="text-xl tracking-tight text-gray-900 font-bold border-b pb-2 mt-8">We win with inclusion</h2>
+            <p className="text-sm text-gray-500">
+              We believe the value of pay transparency contributes towards an honest culture. The targeted range for this position is 18.00 - 40.00 V-Bucks per hour. Due to the nature of the role, which involves global interactions with entities, as well as with employees and stakeholders, functional proficiency in Gen Alpha slang is required.
+              <br/><br/>
+              Requisition ID: 448551 | Expected Travel: 0 - 100% | Career Status: Unpaid | Additional Locations: The Backrooms
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Metadata Sidebar */}
+        <div className="md:w-1/3 space-y-6">
+          <div className="bg-white p-6 border border-gray-200 shadow-sm rounded-sm">
+            <button onClick={handleApply} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 mb-6 rounded-sm transition-colors">
+              Apply now »
+            </button>
+            <a href="#" className="flex items-center text-blue-600 font-bold mb-8 hover:underline">
+              <span className="mr-2">←</span> Back to search results
+            </a>
+
+            <div className="space-y-5 text-sm">
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Requisition ID</p>
+                <p className="text-gray-900 font-bold">448551_BR</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Posted Date</p>
+                <p className="text-gray-900 font-bold">Apr 1, 2026</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Work Area</p>
+                <p className="text-gray-900 font-bold">Information Technology (Meme Div.)</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Career Status</p>
+                <p className="text-gray-900 font-bold">Student / Wage Slave</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Employment Type</p>
+                <p className="text-gray-900 font-bold">Limited Full Time</p>
+              </div>
+              <div>
+                <p className="text-gray-500 font-semibold mb-1">Location</p>
+                <p className="text-gray-900 font-bold">Ohio, US, 43081</p>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
