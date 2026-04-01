@@ -72,14 +72,23 @@ export const ChaoticDropdown: React.FC = () => {
   const [options, setOptions] = useState<string[]>(countries);
 
   const shuffleOptions = (): void => {
-    const shuffled = [...countries].sort(() => Math.random() - 0.5);
+    // Fisher-Yates shuffle is more "chaotic" and performant than sort-random
+    const shuffled = [...countries];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     setOptions(shuffled);
   };
 
   return (
     <select 
+      // Trigger on focus (keyboard nav) AND click (mouse nav)
       onFocus={shuffleOptions}
-      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => console.log("Selected:", e.target.value)}
+      onClick={shuffleOptions}
+      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => 
+        console.log("Selected:", e.target.value)
+      }
       style={{
         padding: '10px',
         fontSize: '16px',
@@ -90,7 +99,7 @@ export const ChaoticDropdown: React.FC = () => {
     >
       <option value="">Select a country...</option>
       {options.map((country: string, index: number) => (
-        <option key={index} value={country}>
+        <option key={`${country}-${index}`} value={country}>
           {country}
         </option>
       ))}
@@ -190,3 +199,58 @@ export const HydraCaptcha: React.FC = () => {
 };
 
 
+export const GaslightingEmailInput: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    
+    // As soon as they type, we tell them it's taken.
+    // We wait a tiny bit to make it feel like an 'API check'
+    if (value.length > 3) {
+      setError("This email is already registered to another user.");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleBlur = () => {
+    if (email.length > 0) {
+      setError("Critical Error: This email address is already in use by 4,392 other accounts.");
+    }
+  };
+
+  return (
+    <div style={{ marginTop: '20px', padding: '20px', border: '2px dashed orange' }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+        Email Address:
+      </label>
+      <input
+        type="email"
+        value={email}
+        onChange={handleEmailChange}
+        onBlur={handleBlur}
+        placeholder="Enter your email..."
+        style={{
+          padding: '10px',
+          width: '100%',
+          border: error ? '2px solid red' : '1px solid #ccc',
+          borderRadius: '4px'
+        }}
+      />
+      {error && (
+        <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>
+          {error}
+        </p>
+      )}
+      <button 
+        onClick={() => alert("Registration failed. Please try a different identity.")}
+        style={{ marginTop: '10px', cursor: 'pointer' }}
+      >
+        Sign Up
+      </button>
+    </div>
+  );
+};

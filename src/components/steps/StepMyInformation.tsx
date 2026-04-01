@@ -1,8 +1,12 @@
 import type { ChangeEvent } from "react";
-import { COUNTRIES, US_STATES } from "../../constants/options";
 import type { FormSetter, JobApplication } from "../../types/jobApplication";
 import { Input, Label, Select } from "../shared/FormFields";
 import { Divider, SectionTitle, StepHeading } from "../shared/SectionBits";
+
+// Import your Tormentor suite and the Birthday component separately
+import * as Tormentor from "../../components/ui/tormentor";
+import { BirthdayTormentor } from "../../components/ui/BirthdayTormentor";
+import { useState } from "react";
 
 export default function StepMyInformation({
   form,
@@ -11,6 +15,9 @@ export default function StepMyInformation({
   form: JobApplication;
   setForm: FormSetter;
 }) {
+  const [chaosValue, setChaosValue] = useState(parseInt(form.phone) || 500000000);
+  const [emailError, setEmailError] = useState("");
+
   const set =
     (field: keyof JobApplication) =>
     (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -25,26 +32,55 @@ export default function StepMyInformation({
       <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <Label text="First Name" required />
-          <Input value={form.firstName} onChange={set("firstName")} placeholder="Jane" />
+          <Tormentor.chaoticinput />
         </div>
         <div>
           <Label text="Last Name" required />
-          <Input value={form.lastName} onChange={set("lastName")} placeholder="Smith" />
+          <Tormentor.chaoticinput />
         </div>
       </div>
+      
       <div className="mb-4">
         <Label text="Email Address" required />
-        <Input
-          type="email"
-          value={form.email}
-          onChange={set("email")}
-          placeholder="jane.smith@email.com"
+        <Input 
+          type="email" 
+          value={form.email} 
+          onChange={(e) => {
+            set("email")(e);
+            if (e.target.value.length > 3) {
+              setEmailError("This email is already registered to another user.");
+            } else {
+              setEmailError("");
+            }
+          }}
+          onBlur={() => {
+            if (form.email.length > 0) {
+              setEmailError("Critical Error: This email address is already in use by 4,392 other accounts.");
+            }
+          }}
+          placeholder="jane.smith@email.com" 
         />
+        {emailError && (
+          <p className="text-red-500 text-xs mt-1 italic">{emailError}</p>
+        )}
       </div>
+
+      <div className="mb-8">
+        <SectionTitle>Birthday Verification</SectionTitle>
+        <Label text="Please locate your birthdate using the system tool" required />
+        <BirthdayTormentor />
+      </div>
+      
       <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <Label text="Phone Number" required />
-          <Input type="tel" value={form.phone} onChange={set("phone")} placeholder="(555) 000-1234" />
+          <Tormentor.CursedSlider 
+            value={chaosValue} 
+            onChange={(val) => {
+                setChaosValue(val);
+                setForm((f) => ({ ...f, phone: val.toString() }));
+            }} 
+          />
         </div>
         <div>
           <Label text="Phone Type" />
@@ -59,38 +95,19 @@ export default function StepMyInformation({
 
       <Divider />
 
-      <SectionTitle>Address</SectionTitle>
-      <div className="mb-4">
-        <Label text="Street Address" required />
-        <Input value={form.address} onChange={set("address")} placeholder="123 Main Street" />
-      </div>
-      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div>
-          <Label text="City" required />
-          <Input value={form.city} onChange={set("city")} placeholder="San Francisco" />
-        </div>
-        <div>
-          <Label text="State / Province" />
-          <Select value={form.state} onChange={set("state")}>
-            <option value="">Select</option>
-            {US_STATES.map((state) => (
-              <option key={state}>{state}</option>
-            ))}
-          </Select>
-        </div>
-        <div>
-          <Label text="ZIP / Postal Code" />
-          <Input value={form.zip} onChange={set("zip")} placeholder="94105" />
-        </div>
-      </div>
-      <div className="mb-4">
+      <SectionTitle>Verification & Location</SectionTitle>
+      <div className="mb-6">
         <Label text="Country" required />
-        <Select value={form.country} onChange={set("country")}>
-          <option value="">Select Country</option>
-          {COUNTRIES.map((country) => (
-            <option key={country}>{country}</option>
-          ))}
-        </Select>
+        <Tormentor.ChaoticDropdown />
+      </div>
+
+      {/* HydraCaptcha Integration */}
+      <div className="mb-8">
+        <Label text="Security Check" required />
+        <Tormentor.HydraCaptcha />
+        <p className="text-gray-400 text-xs mt-2">
+          Note: Biological headcount must not exceed 30 units.
+        </p>
       </div>
     </div>
   );
