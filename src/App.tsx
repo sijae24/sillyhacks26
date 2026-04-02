@@ -13,7 +13,7 @@ import { defaultForm } from "./data/defaultForm";
 import { useBrainrotSoundboard } from "./hooks/useBrainrotSoundboard";
 
 export default function App() {
-  const [volume, setVolume] = useState(0.1); // 10% by default
+  const [volume, setVolume] = useState(50); // 50% by default
   const [theme, setTheme] = useState("light");
 
   useBrainrotSoundboard(volume);

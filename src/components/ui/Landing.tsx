@@ -98,8 +98,11 @@ export default function Landing({
                     </select>
                   </div>
                   
+                  {/* System Audio Config Tormentor */}
                   <div className="border-t pt-4">
-                    <label className="mb-2 block text-xs font-bold text-gray-700">System Audio Integrity</label>
+                    <label className="mb-2 block text-xs font-bold text-gray-700">
+                      System Audio Integrity
+                    </label>
                     <div className="p-2 border border-dashed border-gray-200 rounded">
                       <Tormentor.TormentorVolumeSlider volume={volume} setVolume={setVolume} />
                     </div>

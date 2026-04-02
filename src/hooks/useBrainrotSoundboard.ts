@@ -35,8 +35,8 @@ export function useBrainrotSoundboard(volume: number = 0.5) {
         lastPlayTime = now;
         const audio = sounds[soundKey];
         
-        // 3. Apply the volume right before playing
-        audio.volume = volumeRef.current; 
+        // 3. Apply the volume right before playing, divided by 100
+        audio.volume = volumeRef.current / 100; // <--- ADD / 100 HERE
         audio.currentTime = 0;
         audio.play().catch(() => {});
       }
