@@ -61,7 +61,7 @@ export default function WorkdayTopHeader({
               onClick={() => setIsOpen(!isOpen)}
               className="flex items-center gap-1 cursor-pointer hover:text-blue-600 outline-none py-5"
             >
-              ⚙️ Settings
+              Settings
             </button>
 
             {isOpen && (
