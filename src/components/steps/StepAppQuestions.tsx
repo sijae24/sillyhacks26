@@ -37,14 +37,15 @@ export default function StepAppQuestions({
       <Label text={label} required={required} />
       <div className="mt-1 flex gap-6">
         {options.map((option) => (
-          <label key={option} className="flex cursor-pointer items-center gap-2 text-sm text-gray-700">
+          <label key={option} className="flex cursor-pointer items-center gap-2 text-sm text-gray-700 hover:text-blue-600 transition-colors">
             <input
               type="radio"
               name={field}
               value={option}
               checked={form[field] === option}
               onChange={set(field)}
-              className="h-4 w-4 accent-blue-600"
+              className="h-4 w-4 accent-blue-600 cursor-not-allowed" // Added cursor hint of chaos
+              style={{ transform: Math.random() > 0.8 ? 'rotate(180deg)' : 'none' }}
             />
             {option}
           </label>
@@ -54,7 +55,7 @@ export default function StepAppQuestions({
   );
 
   return (
-    <div>
+    <div style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
       <StepHeading title="Application Questions" />
 
       <SectionTitle>Work Authorization</SectionTitle>
@@ -106,6 +107,7 @@ export default function StepAppQuestions({
           value={form.additionalInfo}
           onChange={set("additionalInfo")}
           placeholder="Any additional context, accommodations needed, or details you would like to share..."
+          style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}
         />
       </div>
     </div>

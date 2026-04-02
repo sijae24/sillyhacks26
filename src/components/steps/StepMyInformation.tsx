@@ -25,7 +25,7 @@ export default function StepMyInformation({
     };
 
   return (
-    <div>
+    <div style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
       <StepHeading title="My Information" />
 
       <SectionTitle>Personal Information</SectionTitle>
@@ -92,8 +92,6 @@ export default function StepMyInformation({
           </Select>
         </div>
       </div>
-
-    
 
       <SectionTitle>Verification & Location</SectionTitle>
       <div className="mb-6">

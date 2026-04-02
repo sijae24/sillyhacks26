@@ -91,7 +91,7 @@ export default function StepMyExperience({
   };
 
   return (
-    <div>
+    <div style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
       <StepHeading title="My Experience" />
 
       <SectionTitle>Work Experience</SectionTitle>

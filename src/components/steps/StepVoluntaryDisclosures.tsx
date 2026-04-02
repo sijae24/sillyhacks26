@@ -17,7 +17,7 @@ export default function StepVoluntaryDisclosures({
     };
 
   return (
-    <div>
+    <div style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
       <StepHeading
         title="Voluntary Disclosures"
         subtitle={

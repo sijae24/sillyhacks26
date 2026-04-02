@@ -16,7 +16,7 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export default function StepReview({ form }: { form: JobApplication }) {
   return (
-    <div>
+    <div style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
       <h1 className="mb-6 text-center text-2xl font-bold text-gray-900">Review and Submit</h1>
 
       <div className="mb-6">
@@ -78,9 +78,9 @@ export default function StepReview({ form }: { form: JobApplication }) {
         <Row label="Heard About Role" value={form.howDidYouHear} />
       </div>
 
-      <div className="mb-4 rounded border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800">
+      <div className="mb-4 rounded border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800 italic">
         Please review your application carefully before submitting. Once submitted, you will not be
-        able to make changes.
+        able to make changes. Ever.
       </div>
     </div>
   );
