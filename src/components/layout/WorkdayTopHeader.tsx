@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ChaosMediaOverlay, { pickRandomMedia } from "../ui/ChaosMediaOverlay";
+import * as Tormentor from "../../components/ui/tormentor";
 
 const MEDIA = [
   new URL("../../assets/gifs/bruh.gif", import.meta.url).href,
@@ -14,29 +15,93 @@ const MEDIA = [
   new URL("../../assets/images/tiger.png", import.meta.url).href,
 ];
 
-export default function WorkdayTopHeader() {
+export default function WorkdayTopHeader({
+  volume,
+  setVolume,
+  theme,
+  setTheme,
+}: {
+  volume: number;
+  setVolume: (v: number) => void;
+  theme: string;
+  setTheme: (t: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<string | null>(null);
 
-  const popMain = () => {
+  const popHelp = () => {
     setActiveMedia(pickRandomMedia(MEDIA));
   };
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3">
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-3 shadow-sm">
+        {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded bg-orange-500 text-sm font-black text-white">
             W
           </div>
           <span className="text-lg font-semibold text-orange-500">workday</span>
         </div>
-        <nav className="flex gap-4 text-sm text-gray-500">
-          <button className="cursor-pointer hover:text-orange-500" onClick={popMain} type="button">
+
+        {/* Nav */}
+        <nav className="flex items-center gap-6 text-sm font-semibold text-gray-600">
+          {/* Help — triggers chaos media overlay */}
+          <button
+            className="cursor-pointer hover:text-orange-500"
+            onClick={popHelp}
+            type="button"
+          >
             Help
           </button>
+
+          {/* Settings dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-1 cursor-pointer hover:text-blue-600 outline-none py-5"
+            >
+              ⚙️ Settings
+            </button>
+
+            {isOpen && (
+              <div className="absolute right-0 mt-0 w-64 rounded-sm border border-gray-300 bg-white p-4 shadow-xl z-50 font-normal">
+                {/* Theme */}
+                <div className="mb-6">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Theme</label>
+                  <select
+                    value={theme}
+                    onChange={(e) => setTheme(e.target.value)}
+                    className="w-full rounded-sm border border-gray-300 bg-white px-2 py-1 text-sm outline-none focus:border-blue-500"
+                  >
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </div>
+
+                {/* Volume tormentor */}
+                <div className="border-t pt-4">
+                  <label className="mb-2 block text-xs font-bold text-gray-700">
+                    System Audio Integrity
+                  </label>
+                  <div className="p-2 border border-dashed border-gray-200 rounded">
+                    <Tormentor.TormentorVolumeSlider />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <a href="#" className="hidden md:block hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 py-5">
+            View profile
+          </a>
+          <a href="#" className="hidden md:block hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 py-5">
+            Language (Global) ▼
+          </a>
         </nav>
       </header>
 
+      {/* Chaos media overlay — triggered by Help button */}
       <ChaosMediaOverlay
         activeMedia={activeMedia}
         mediaPool={MEDIA}

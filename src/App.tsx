@@ -30,8 +30,10 @@ const CHAOS_MEDIA = [
 ];
 
 export default function App() {
-  
-  useBrainrotSoundboard();
+  const [volume, setVolume] = useState(0.1); // 10% by default
+  const [theme, setTheme] = useState("light");
+
+  useBrainrotSoundboard(volume);
 
   const [showLanding, setShowLanding] = useState(true);
   const [step, setStep] = useState(1);
@@ -77,12 +79,25 @@ export default function App() {
   );
 
   if (showLanding) {
-    return <Landing onApply={() => setShowLanding(false)} />;
+    return (
+      <Landing
+        onApply={() => setShowLanding(false)}
+        volume={volume}
+        setVolume={setVolume}
+        theme={theme}
+        setTheme={setTheme}
+      />
+    );
   }
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      <WorkdayTopHeader />
+      <WorkdayTopHeader
+        volume={volume}
+        setVolume={setVolume}
+        theme={theme}
+        setTheme={setTheme}
+      />
 
       <main className="min-h-screen w-full bg-white pb-24">
         <JobPostingHeader onBack={() => setShowLanding(true)} />

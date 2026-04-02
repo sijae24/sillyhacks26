@@ -1,8 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type SoundKey = "vine" | "fah" ;
 
-export function useBrainrotSoundboard() {
+// 1. Accept the volume parameter
+export function useBrainrotSoundboard(volume: number = 0.5) {
+  // 2. Safely store the volume so the event listener always sees the latest value
+  const volumeRef = useRef(volume);
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
+
   useEffect(() => {
     const sounds: Record<SoundKey, HTMLAudioElement> = {
       vine: new Audio(new URL("/src/assets/audio/vine_boom.mp3", import.meta.url).href),
@@ -16,7 +23,7 @@ export function useBrainrotSoundboard() {
     let lastPlayTime = 0;
     const cooldownMs = 50;
 
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       const now = Date.now();
       if (now - lastPlayTime < cooldownMs) return;
 
@@ -27,11 +34,15 @@ export function useBrainrotSoundboard() {
       if (soundKey) {
         lastPlayTime = now;
         const audio = sounds[soundKey];
+        
+        // 3. Apply the volume right before playing
+        audio.volume = volumeRef.current; 
         audio.currentTime = 0;
         audio.play().catch(() => {});
       }
-    });
+    };
 
-    return () => {};
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 }
