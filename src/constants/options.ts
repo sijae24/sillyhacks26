@@ -1,5 +1,5 @@
 export const STEPS = [
-  "Autofill with Resume",
+
   "My Information",
   "My Experience",
   "Application Questions",
