@@ -1,6 +1,6 @@
 import type { JobApplication } from "../../types/jobApplication";
 
-export default function StepReview({ form }: { form: JobApplication }) {
+export default function StepReview({ form: _form }: { form: JobApplication }) {
   return (
     <div>
       <h1>Application status: closed.</h1>

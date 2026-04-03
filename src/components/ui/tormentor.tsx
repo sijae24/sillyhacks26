@@ -39,11 +39,6 @@ export const useSubmissionLogic = (sliderValue: number) => {
 };
 
 // 2. Cursed Slider Component
-interface CursedSliderProps {
-  value: number;
-  onChange: (value: number) => void;
-}
-
 export const CursedSlider = ({ value, onChange }: { value: number; onChange: (val: number) => void }) => {
   return (
     <div className="flex flex-col gap-4 p-4 border border-gray-300 rounded-lg bg-gray-50">

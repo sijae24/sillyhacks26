@@ -194,7 +194,6 @@ export default function Landing({
               <li>Ability to debug production issues by simply staring at the screen until it fixes itself.</li>
               <li>Required fluency in C++, Rust, Python, Java, Go, and Gen Alpha slang.</li>
               <li>Proven track record of answering "it works on my machine" during high-stakes client demos.</li>
-              <li>Willingness to sacrifice your weekends for the "hustle" in exchange for a $5 pizza gift card.</li>
             </ul>
 
             <h2 className="text-xl font-bold border-b pb-2 text-blue-900 mt-8">Compensation & "Benefits"</h2>
@@ -206,6 +205,8 @@ export default function Landing({
           </div>
         </div>
 
+        
+        
         {/* Right Column */}
         <aside className="md:w-1/3 space-y-6">
           <div className="bg-blue-50 p-6 border border-blue-200">

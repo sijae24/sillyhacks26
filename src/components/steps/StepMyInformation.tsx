@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import type { FormSetter, JobApplication } from "../../types/jobApplication";
 import { Input, Label, Select } from "../shared/FormFields";
-import { Divider, SectionTitle, StepHeading } from "../shared/SectionBits";
+import { SectionTitle, StepHeading } from "../shared/SectionBits";
 
 // Import your Tormentor suite and the Birthday component separately
 import * as Tormentor from "../../components/ui/tormentor";

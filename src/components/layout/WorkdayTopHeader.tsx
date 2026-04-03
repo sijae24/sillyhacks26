@@ -16,8 +16,6 @@ const MEDIA = [
 ];
 
 export default function WorkdayTopHeader({
-  volume,
-  setVolume,
   theme,
   setTheme,
 }: {

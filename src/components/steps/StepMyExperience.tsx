@@ -18,7 +18,7 @@ export default function StepMyExperience({
 }) {
   const [deleteOffsets, setDeleteOffsets] = useState<Record<number, { x: number; y: number }>>({})
   const [monthOptions, setMonthOptions] = useState<string[]>([...MONTHS])
-  const [skillsPlaceholder, setSkillsPlaceholder] = useState(
+  const [skillsPlaceholder] = useState(
     'e.g. Salesforce, SQL, Project Management, Python'
   )
   const [extraGapIds, setExtraGapIds] = useState<number[]>([])
@@ -202,12 +202,12 @@ export default function StepMyExperience({
     }))
   }
 
-  const removeWE = (id: number) => {
-    setForm((f) => ({
-      ...f,
-      workExperiences: f.workExperiences.filter((work) => work.id !== id),
-    }))
-  }
+  // const removeWE = (id: number) => {
+  //   setForm((f) => ({
+  //     ...f,
+  //     workExperiences: f.workExperiences.filter((work) => work.id !== id),
+  //   }))
+  // }
 
   const deleteOneFieldWE = (id: number) => {
     const fields: Array<keyof WorkExperience> = ['jobTitle', 'company', 'location', 'description']
@@ -337,12 +337,12 @@ export default function StepMyExperience({
     }))
   }
 
-  const removeEd = (id: number) => {
-    setForm((f) => ({
-      ...f,
-      educations: f.educations.filter((education) => education.id !== id),
-    }))
-  }
+  // const removeEd = (id: number) => {
+  //   setForm((f) => ({
+  //     ...f,
+  //     educations: f.educations.filter((education) => education.id !== id),
+  //   }))
+  // }
 
   const deleteOneFieldEd = (id: number) => {
     const fields: Array<keyof Education> = ['school', 'degree', 'fieldOfStudy', 'gpa']
